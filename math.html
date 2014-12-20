@@ -1,13 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="ken_homepage">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Math page</title>
 <link rel="stylesheet" href="markdown.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
 <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+<script src="math_script.js"></script>
 </head>
-<body>
-\[ \displaystyle (1 + x)^n = \sum_{k = 0}^n \binom{n}{k} x^k \]
+<body ng-controller="math_content_ctrl">
+<div ng-repeat="url in content">
+  <div ng-include="'math/' + url"></div>
+  <hr />
+</div>
 </body>
 </html>
