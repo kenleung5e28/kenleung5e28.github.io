@@ -7,10 +7,11 @@
 	<script type="text/javascript">
 		var ggbParams = {"prerelease" : false, "width" : 800, "height": 600, "showToolBar": false, "borderColor": null, "showMenuBar": false, 
 			"showAlgebraInput": false, "showResetIcon": true, "enableLabelDrags": false, "enableShiftDragZoom": true,
-			"enableRightClick": false, "enable3d": true,
+			"enableRightClick": false, \
 			"capturingThreshold": null, "showToolBarHelp": false, "errorDialogsActive": true, "useBrowserForJS": false, 
-			"filename": "ggb/nice.ggb"};
-		var applet = new GGBApplet("5.0", ggbParams);
+			"filename": "ggb/paper_folding.ggb"};
+		var ggbViews = {"is3D":1,"AV":0,"SV":0,"CV":0,"EV2":0,"CP":0,"PC":0,"DA":0,"FI":0,"PV":0,"macro":0};
+		var applet = new GGBApplet("5.0", ggbParams, ggbViews, true);
 
 		window.onload = function () {
 			applet.inject("ggb_container");
