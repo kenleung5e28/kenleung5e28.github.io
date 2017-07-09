@@ -21,17 +21,21 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-  <body id="fluid-container">
+  <body class="fluid-container">
     <h1>Geogebra test</h1>
     <div id="ggb_container"></div>
-    <input type="text" id="filepath" value="nice"> <button id="change">Change</button>
-    
+    <div id="preview_container">
+      <video style="display: none" id="preview"></video>
+      <button id="scan_button">Scan</button>
+    </div>
+
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-
+    
+    <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
 
     <script type="text/javascript" src="https://cdn.geogebra.org/apps/deployggb.js"></script>
     <script type="text/javascript">
@@ -45,17 +49,37 @@
         "filename": "http://kenleung5e28.github.io/ggb/paper_folding.ggb"};
       var ggbViews = {"is3D": 1, "AV": 0, "SV": 0, "CV": 0, "EV2": 0, "CP": 0, "PC": 0,"DA": 0, "FI": 0, "PV": 0, "macro": 0};
       var applet = new GGBApplet("5.0", ggbParams, ggbViews, true);
-
       applet.setHTML5CodebaseVersion("5.0");
+
       $(window).load(function () {
         applet.inject("ggb_container");
       });
 
-      $("#change").on("click", function (event) {
-        ggbParams.filename = "http://kenleung5e28.github.io/ggb/" + $("#filepath").val() + ".ggb";
+      var scanner = new Instascan.Scanner({video: document.getElementById("preview"), scanPeriod: 2});
+      scanner.addListener("scan", function (content, image) {
+        scanner.stop();
+        $("#preview").hide();
+        $("#scan_button").show();
+        ggbParams.filename = "http://kenleung5e28.github.io/ggb/" + content + ".ggb";
         applet = new GGBApplet("5.0", ggbParams, ggbViews, true);
         applet.inject("ggb_container");
       });
+
+      $("#scan_button").on("click", function (event) {
+        Instascan.Camera.getCameras().then(function (cameras) {
+          if (cameras.length > 0) {
+            $("#preview").show();
+            $("#scan_button").hide();
+            scanner.start(cameras[0]);
+          } else {
+          console.error("No cameras found.");
+          }
+        }).catch(function (e) {
+          console.error(e);
+        });
+      });
+      
+      
     </script>
   </body>
 </html>
