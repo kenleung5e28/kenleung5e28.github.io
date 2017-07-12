@@ -32,8 +32,9 @@
     		<li><a class="dropdown-item" href="#">paper_folding</a></li>
     	</ul>
     </div>
-    
-    <div id="ggb_container"></div>
+    <div class="col-xs-12" id="ggb_view">
+    	<div id="ggb_container"></div>
+    </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -43,10 +44,10 @@
     <script type="text/javascript" src="https://cdn.geogebra.org/apps/deployggb.js"></script>
     <script type="text/javascript">
     	$(function () {
-		    var ggbParams = {"prerelease" : false, "width" : 1000, "height": 400, 
+		    var ggbParams = {"prerelease" : false, "width" : $("#ggb_view").width(), "height": $("#ggb_view").height(), 
 			   "showToolBar": false, "borderColor": null, "showMenuBar": false, 
 			   "showAlgebraInput": false, "showResetIcon": true, 
-			   "enableLabelDrags": false, "enableShiftDragZoom": false,
+			   "enableLabelDrags": false, "enableShiftDragZoom": true,
 			   "enableRightClick": false, 
 			   "capturingThreshold": null, "showToolBarHelp": false, 
 			   "errorDialogsActive": true, "useBrowserForJS": false, 
@@ -55,28 +56,28 @@
 			var applet = new GGBApplet("5.0", ggbParams, ggbViews, true);
 			applet.setHTML5CodebaseVersion("5.0");
 			applet.inject("ggb_container");
-    	});
 
-    	$(".dropdown-item").on("click", function () {
-    		var xhr = new XMLHttpRequest();
-    		xhr.open("GET", "https://kenleung5e28.github.io/ggb/" + $(this).text() + ".ggb", true);
-    		xhr.responseType = "arraybuffer";
-    		xhr.onload = function (event) {
-    			var buf = xhr.response;
-    			if (buf) {
-    				var bytes = new Uint8Array(buf);
-    				var data = '';
-    				for (var i = 0; i < bytes.byteLength; i++) {
-    					data += String.fromCharCode(bytes[i]);
-    				}
-					//$("#text1").text(btoa(data));
-					document.ggbApplet.setBase64(btoa(data));
-    			}
-    			else {
-    				$("#text1").text("ERROR");
-    			}
-    		};
-    		xhr.send(null);
+	    	$(".dropdown-item").on("click", function () {
+	    		var xhr = new XMLHttpRequest();
+	    		xhr.open("GET", "https://kenleung5e28.github.io/ggb/" + $(this).text() + ".ggb", true);
+	    		xhr.responseType = "arraybuffer";
+	    		xhr.onload = function (event) {
+	    			var buf = xhr.response;
+	    			if (buf) {
+	    				var bytes = new Uint8Array(buf);
+	    				var data = '';
+	    				for (var i = 0; i < bytes.byteLength; i++) {
+	    					data += String.fromCharCode(bytes[i]);
+	    				}
+						//$("#text1").text(btoa(data));
+						document.ggbApplet.setBase64(btoa(data));
+	    			}
+	    			else {
+	    				$("#text1").text("ERROR");
+	    			}
+	    		};
+	    		xhr.send(null);
+	    	});
     	});
     </script>
   </body>
