@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Interactive Math Illustration</title>
+    <title>3D Model Illustration</title>
 
     <!-- Bootstrap -->
     <!-- Latest compiled and minified CSS -->
@@ -50,7 +50,8 @@
                 "enableLabelDrags": false, "enableShiftDragZoom": true,
                 "enableRightClick": false,
                 "capturingThreshold": null, "showToolBarHelp": false,
-                "errorDialogsActive": true, "useBrowserForJS": false
+                "errorDialogsActive": true, "useBrowserForJS": false,
+                "filename": '3D_Model.ggb'
             };
             var ggbViews = { "is3D": 1, "AV": 0, "SV": 0, "CV": 0, "EV2": 0, "CP": 0, "PC": 0, "DA": 0, "FI": 0, "PV": 0, "macro": 0 };
             var applet = new GGBApplet("5.0", ggbParams, ggbViews, true);
@@ -67,7 +68,7 @@
                     data += String.fromCharCode(bytes[i]);
                 }
                 applet.setBase64(btoa(data));
-                applet.inject("ggb_container");
+                
             }
             xhr.send(null);
 
@@ -75,7 +76,7 @@
                 document.ggbApplet.recalculateEnvironments();
             });
 
-            
+            applet.inject("ggb_container");
 
         });
     </script>
