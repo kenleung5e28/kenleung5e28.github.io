@@ -66,12 +66,12 @@
                 for (var i = 0; i < bytes.byteLength; i++) {
                     data += String.fromCharCode(bytes[i]);
                 }
-                document.ggbApplet.setBase64(btoa(data));
+                applet.setBase64(btoa(data));
             }
             xhr.send(null);
 
             $(window).resize(function () {
-                document.ggbApplet.recalculateEnvironments();
+                applet.recalculateEnvironments();
             });
 
             applet.inject("ggb_container");
