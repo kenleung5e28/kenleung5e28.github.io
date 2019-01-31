@@ -26,16 +26,8 @@
 </head>
 
 <body class="container-fluid">
-    <h3>Interactive Math Illustration</h3>
-    <h1 id="ggb_container_status">Loading...</h1>
+    <h3>3D Model Illustration</h3>
     <div id="ggb_container" style="height: 500px; width: 1200px;"></div>
-
-    <div id="selection_interface" class="btn-group dropup" style="display: none;">
-        <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">Select a figure <span class="caret"></span></a>
-        <ul id="ggb_dropdown" class="dropdown-menu">
-            
-        </ul>
-    </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -47,12 +39,12 @@
     <script type="text/javascript" src="https://cdn.geogebra.org/apps/deployggb.js"></script>
     <script type="text/javascript">
         const FatKen = {
-            ggb_path: "https://kenleung5e28.github.io/"
+            ggb_path: "https://kenleung5e28.github.io/3D_Model.ggb"
         };
 
         $(function () {
             var ggbParams = {                
-                "prerelease": false, "width": 1000, "height": 400,
+                "prerelease": false, "width": 1000, "height": 500,
                 "showToolBar": false, "borderColor": null, "showMenuBar": false,
                 "showAlgebraInput": false, "showResetIcon": true,
                 "enableLabelDrags": false, "enableShiftDragZoom": true,
@@ -65,51 +57,24 @@
             applet.setHTML5CodebaseVersion("5.0");
 
             var req = new XMLHttpRequest();
-            req.open("GET", FatKen.ggb_path + "ggb_list.txt", true);
-            req.responseType = "text";
-            req.onload = function (event) {
-                var buf = req.response;
-                var data = [];
-                if (buf) {
-                    data = buf.split(/\r?\n/);
+            xhr.open("GET", FatKen.ggb_path);
+            xhr.responseType = "arraybuffer";
+            var buf = xhr.response;
+            if (buf) {
+                var bytes = new Uint8Array(buf);
+                var data = '';
+                for (var i = 0; i < bytes.byteLength; i++) {
+                    data += String.fromCharCode(bytes[i]);
                 }
-                for (var i = 0; i < data.length; i++) {
-                    var item = data[i].split(';');
-                    item[0].trim();
-                    item[1].trim();
-                    var item_node = $("<a>").attr("href", "#").data("ggb", item[0]).text(item[1]);
-                    item_node.click(click_link_handler);
-                    $("#ggb_dropdown").append($("<li>").append(item_node));
-                }
-            };
-            req.send(null);
-
-            var click_link_handler = function () {
-                $(this).parents(".btn-group").find(".dropdown-toggle").html($(this).text() + ' <span class="caret"></span>');
-                var xhr = new XMLHttpRequest();
-                xhr.open("GET", FatKen.ggb_path + $(this).data("ggb") + ".ggb", true);
-                xhr.responseType = "arraybuffer";
-                xhr.onload = function (event) {
-                    var buf = xhr.response;
-                    if (buf) {
-                        var bytes = new Uint8Array(buf);
-                        var data = '';
-                        for (var i = 0; i < bytes.byteLength; i++) {
-                            data += String.fromCharCode(bytes[i]);
-                        }
-                        document.ggbApplet.setBase64(btoa(data));
-                    }
-                };
-                xhr.send(null);
-            };
+                document.ggbApplet.setBase64(btoa(data));
+            }
+            xhr.send(null);
 
             $(window).resize(function () {
                 document.ggbApplet.recalculateEnvironments();
             });
 
             applet.inject("ggb_container");
-            $("#ggb_container_status").hide();
-            $("#selection_interface").show();
 
         });
     </script>
