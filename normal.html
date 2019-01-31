@@ -67,14 +67,15 @@
                     data += String.fromCharCode(bytes[i]);
                 }
                 applet.setBase64(btoa(data));
+                applet.inject("ggb_container");
             }
             xhr.send(null);
 
             $(window).resize(function () {
-                applet.recalculateEnvironments();
+                document.ggbApplet.recalculateEnvironments();
             });
 
-            applet.inject("ggb_container");
+            
 
         });
     </script>
